@@ -1,0 +1,112 @@
+<!-- PROGRAM MADE BY HARLEY THORPE 2024-08-22 --->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+    <!-- Makes table cell RED when time remaining is 0 -->
+    $(document).ready(function(){
+        $('#table_id td.time_left').each(function(){
+            if ($(this).text() === '0 ' || $(this).text() === '1 ' || $(this).text() === '2 ') {
+                $(this).css('background-color','#f00');
+            }
+            if ($(this).text() === '3 ' || $(this).text() === '4 ' || $(this).text() === '5 ') {
+                $(this).css('background-color','#FFFF00');
+            }
+        });
+    });
+    $(document).ready(function(){
+        $('#table_id1 td.time_left').each(function(){
+            if ($(this).text() === '0 ' || $(this).text() === '1 ' || $(this).text() === '2 ') {
+                $(this).css('background-color','#f00');
+            }
+            if ($(this).text() === '3 ' || $(this).text() === '4 ' || $(this).text() === '5 ') {
+                $(this).css('background-color','#FFFF00');
+            }
+        });
+    });
+</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="10; url=/" >
+    <title>Kumon Student Schedule</title>
+    <link href="{{ url_for('static', filename='styles/style.css')}}" rel="stylesheet" />
+</head>
+<style>
+</style>
+<body>
+
+<img src="/static/kumon_banner.gif" alt="Kumon">
+
+<form action="" method="get">
+    <!--<input type="submit" value="Save" name="save"/> -->
+    <input type="text" maxlength="3" autocomplete="off" name="student_index" id="student_index"
+           placeholder="Enter Student ID" autofocus>  <br />
+</form>
+
+<!-- if students list is empty, write that the centre is empty -->
+{% if students.__len__() == 0 %}
+        <p> Students are here to come!
+    {% else %}
+        <h1>EL/PI</h1>
+        <h1>MC</h1>
+        <!-- if not empty, make a table displaying all the students -->
+        <table id="table_id">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Class Type</th>
+                <th>Name</th>
+                <th>Time Entered</th>
+                <th>Time Left</th>
+                <th>Meeting Indra</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                {% if student["Type"] != "MC" %}
+                <tr>
+                    <td>{{ student["Index"] }} </td>
+                    <td>{{ student["Type"] }}</td>
+                    <td>{{ student["Name"] }}</td>
+                    <td>{{ student["Start Time"] }}</td>
+                    <td class="time_left">{{ student["Time Left"] }} </td>
+                    {% if student["Meeting"] == True %}
+                    <td>Yes</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <table id="table_id1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Class Type</th>
+                <th>Name</th>
+                <th>Time Entered</th>
+                <th>Time Left</th>
+                <th>Meeting Indra</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                {% if student["Type"] == "MC" %}
+                <tr>
+                    <td>{{ student["Index"] }} </td>
+                    <td>{{ student["Type"] }}</td>
+                    <td>{{ student["Name"] }}</td>
+                    <td>{{ student["Start Time"] }}</td>
+                    <td class="time_left">{{ student["Time Left"] }} </td>
+                    {% if student["Meeting"] == True %}
+                    <td>Yes</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+
+</body>
+</html>
